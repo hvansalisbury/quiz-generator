@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Custom Quiz Maker</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body id="body">
+    <header>
+        <div id="header-left">
+            <h1>Quiz Maker: 5000</h1>
+        </div>
+        <nav>
+            <h2 id="make-quiz" class="nav-text">Make a Quiz</h2>
+            <div id="space"></div>
+            <div class="dropdown">
+                <h2 class="dropdown-quiz-button">Stored Quizzes ▼</h2>
+                <div id="dropdown-quiz-list" class="dropdown-content">
+                    <h3>question 1</h3>
+                    <h3>question 2</h3>
+                    <h3>question 3</h3>
+                    <h3>question 4</h3>
+                    <h3>question 5</h3>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <aside>
+            <div id="timer-box" class="box">
+                <h3>Time</h3>
+                <h3 id="timer-text">10:00</h3>
+            </div>
+            <div id="score-box" class="box">
+                <h3>Score</h3>
+                <h3 id="score-text">100</h3>
+            </div>
+            <div id="button-box" class="box">
+                <h3>Start</h3>
+                <h3>Quit</h3>
+            </div>
+        </aside>
+
+        <section id="main-section">
+            <div id="content" class="box">
+                <div id="question-header">
+                    <h3 id="question-header-text">Welcome! What would you like to do?</h3>
+                </div>
+                <section id="question-form-section" class="hidden">
+                    <form id="question-form">
+                        <div class="form-line">
+                            <h4>Question: </h4>
+                            <input id="question-input" type="text" placeholder="Type your question here"
+                                class="text-inputs" required>
+                        </div>
+                        <div class="form-line">
+                            <h4>Choice 1: </h4>
+                            <input id="choice-1-input" type="text" placeholder="Type the first answer choice here"
+                                class="text-inputs" required>
+                            <input type="radio" id="choice-1-radio" name="correct-answer" value="1st choice is correct"
+                                class="radio" checked>
+                            <label for="choice-1">Correct Answer</label>
+                        </div>
+                        <div class="form-line">
+                            <h4>Choice 2: </h4>
+                            <input id="choice-2-input" type="text" placeholder="Type the second answer choice here"
+                                class="text-inputs" required>
+                            <input type="radio" id="choice-2-radio" name="correct-answer" value="2nd choice is correct"
+                                class="radio">
+                            <label for="choice-2">Correct Answer</label>
+                        </div>
+                        <div class="form-line">
+                            <h4>Choice 3: </h4>
+                            <input id="choice-3-input" type="text" placeholder="Type the third answer choice here"
+                                class="text-inputs" required>
+                            <input type="radio" id="choice-3-radio" name="correct-answer" value="3rd choice is correct"
+                                class="radio">
+                            <label for="choice-3">Correct Answer</label>
+                        </div>
+                        <div class="form-line">
+                            <h4>Choice 4: </h4>
+                            <input id="choice-4-input" type="text" placeholder="Type the fourth answer choice here"
+                                class="text-inputs" required>
+                            <input type="radio" id="choice-4-radio" name="correct-answer" value="4th choice is correct"
+                                class="radio">
+                            <label for="choice-4">Correct Answer</label>
+                        </div>
+                        <div>
+                            <button id="add-question-button" class="form-button">
+                                Add Question
+                            </button>
+                        </div>
+                    </form>
+                </section>
+                <section id="another-question" class="hidden">
+                    <button id="new-question-button">Yes, I'm not finished.</button>
+                    <button id="complete-quiz-button">No, let's make this thing!</button>
+                </section>
+                <section id="quiz-made" class="hidden">
+                    <h4>Review your quiz.</h4>
+                    <div id="quiz-review-box"></div>
+                    <div id="review-buttons">
+                        <button id="edit-question-button">Edit Question</button>
+                        <button id="delete-question-button">Delete Question</button>
+                        <button id="save-quiz-button">Save Quiz</button>
+                    </div>
+                </section>
+                <section id="edit-quiz" class="hidden">
+                    <div class="dropdown">
+                        <h5 class="dropdown-question-button">Quiz Questions ▼</h5>
+                        <div id="dropdown-question-list" class="dropdown-content">
+                            <h5>question 1</h5>
+                            <h5>question 2</h5>
+                            <h5>question 3</h5>
+                            <h5>question 4</h5>
+                            <h5>question 5</h5>
+                        </div>
+                    </div>
+                </section>
+                <section id="delete-question-section" class="hidden">
+                    <div id="delete-question-container"></div>
+                </section>
+                <section id="save-quiz-section" class="hidden">
+                    <form id="name-quiz-form">
+                        <input id="user-quiz-name">
+                        <button id="quiz-name-button">Store Quiz</button>
+                    </form>
+                </section>
+                <section id="stored-quiz-section" class="hidden">
+                    <div id="stored-quiz-container">
+                    </div>
+                </section>
+                <section id="quiz-selected-section" class="hidden">
+                    <div id="quiz-selected-buttons">
+                        <button id="review-quiz-button">Review Quiz</button>
+                        <button id="play-quiz-button">Play Quiz</button>
+                    </div>
+                </section>
+                <section id="start-quiz-section" class="hidden">
+                    <form id="enter-name-form">
+                        <input id="user-name-input" type="text" required>
+                        <button id="name-button">Submit Name</button>
+                    </form>
+                </section>
+                <section id="rendered-quiz-section" class="hidden">
+                    <div id="rendered-quiz-container">
+                        <h3 id="rendered-choice1" class="rendered-choice" data-index="0" data-key="choice1"></h3>
+                        <h3 id="rendered-choice2" class="rendered-choice" data-index="1" data-key="choice2"></h3>
+                        <h3 id="rendered-choice3" class="rendered-choice" data-index="2" data-key="choice3"></h3>
+                        <h3 id="rendered-choice4" class="rendered-choice" data-index="3" data-key="choice4"> </h3>
+                    </div>
+                </section>
+                <section id="end-quiz-section" class="hidden">
+                    <div id="end-quiz-container">
+                        <h4>Would you like to try again?</h4>
+                        <button id="try-again-button">Try Again</button>
+                    </div>
+                </section>
+            </div>
+            <div id="current-data" class="box">
+                <h6 id="question-added" class="hidden">QUESTION ADDED!</h6>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <h7>&copy; 2022 Van Salisbury🙹</h7>
+    </footer>
+    <script src="assets/js/script.js"></script>
+</body>
