@@ -18,7 +18,7 @@ const choice3Radio = document.getElementById('choice-3-radio');
 const choice4Radio = document.getElementById('choice-4-radio');
 var userQuiz = [];
 
-const questionAdded = document.getElementById('question-added');
+const currentMessage = document.getElementById('current-message');
 const anotherQuestionEl = document.getElementById('another-question');
 const newQuestionBtn = document.getElementById('new-question-button');
 const completeQuizBtn = document.getElementById('complete-quiz-button');
@@ -45,10 +45,12 @@ var storedQuizzes = [];
 
 const nameQuizForm = document.getElementById('name-quiz-form');
 const userQuizName = document.getElementById('user-quiz-name');
+const quizTime = document.getElementById('quiz-time');
 
 const quizSelectedSection = document.getElementById('quiz-selected-section');
 const reviewQuizBtn = document.getElementById('review-quiz-button');
 const playQuizBtn = document.getElementById('play-quiz-button');
+const scoresBtn = document.getElementById('scores-button');
 
 const storedQuizSection = document.getElementById('stored-quiz-section');
 
@@ -71,6 +73,7 @@ var userScore;
 var currentQuiz = [];
 
 const timerText = document.getElementById('timer-text');
+var timeInSeconds = '';
 const scoreText = document.getElementById('score-text');
 
 var totalQuestions;
@@ -82,161 +85,8 @@ const endQuizContainer = document.getElementById('end-quiz-container');
 
 const tryAgainBtn = document.getElementById('try-again-button');
 
-userQuiz = [
-  {
-    question: 'question1',
-    choice1: {
-      choice1Text: 'wordsA',
-      correct: true
-    },
-    choice2: {
-      choice2Text: 'wordsB',
-      correct: false
-    },
-    choice3: {
-      choice3Text: 'wordsC',
-      correct: false
-    },
-    choice4: {
-      choice4Text: 'wordsD',
-      correct: false
-    }
-  },
-  {
-    question: 'question2',
-    choice1: {
-      choice1Text: 'wordsAB',
-      correct: false
-    },
-    choice2: {
-      choice2Text: 'wordsBC',
-      correct: true
-    },
-    choice3: {
-      choice3Text: 'wordsCD',
-      correct: false
-    },
-    choice4: {
-      choice4Text: 'wordsDE',
-      correct: false
-    }
-  },
-  {
-    question: 'question3',
-    choice1: {
-      choice1Text: 'wordsABC',
-      correct: true
-    },
-    choice2: {
-      choice2Text: 'wordsBCD',
-      correct: false
-    },
-    choice3: {
-      choice3Text: 'wordsCDE',
-      correct: false
-    },
-    choice4: {
-      choice4Text: 'wordsDEF',
-      correct: false
-    }
-  },
-  {
-    question: 'question4',
-    choice1: {
-      choice1Text: 'wordsABCD',
-      correct: true
-    },
-    choice2: {
-      choice2Text: 'wordsBCDE',
-      correct: false
-    },
-    choice3: {
-      choice3Text: 'wordsCDEF',
-      correct: false
-    },
-    choice4: {
-      choice4Text: 'wordsDEFG',
-      correct: false
-    }
-  },
-  {
-    question: 'question5',
-    choice1: {
-      choice1Text: 'wordsABCD',
-      correct: true
-    },
-    choice2: {
-      choice2Text: 'wordsBCDE',
-      correct: false
-    },
-    choice3: {
-      choice3Text: 'wordsCDEF',
-      correct: false
-    },
-    choice4: {
-      choice4Text: 'wordsDEFG',
-      correct: false
-    }
-  },
-  {
-    question: 'question6',
-    choice1: {
-      choice1Text: 'wordsABCD',
-      correct: true
-    },
-    choice2: {
-      choice2Text: 'wordsBCDE',
-      correct: false
-    },
-    choice3: {
-      choice3Text: 'wordsCDEF',
-      correct: false
-    },
-    choice4: {
-      choice4Text: 'wordsDEFG',
-      correct: false
-    }
-  },
-
-  {
-    question: 'question7',
-    choice1: {
-      choice1Text: 'wordsABCD',
-      correct: true
-    },
-    choice2: {
-      choice2Text: 'wordsBCDE',
-      correct: false
-    },
-    choice3: {
-      choice3Text: 'wordsCDEF',
-      correct: false
-    },
-    choice4: {
-      choice4Text: 'wordsDEFG',
-      correct: false
-    }
-  },
-  {
-    question: 'question8',
-    choice1: {
-      choice1Text: 'wordsABCD',
-      correct: true
-    },
-    choice2: {
-      choice2Text: 'wordsBCDE',
-      correct: false
-    },
-    choice3: {
-      choice3Text: 'wordsCDEF',
-      correct: false
-    },
-    choice4: {
-      choice4Text: 'wordsDEFG',
-      correct: false
-    }
-  }
-]
+const scoresSection = document.getElementById('scores-section');
+const scoresContainer = document.getElementById('scores-container');
 
 function addQuestion() {
   questionInput.focus();
@@ -277,11 +127,12 @@ function addQuestion() {
 
 function anotherQuestion() {
   hideAllSections();
-  questionAdded.classList.remove('hidden');
   anotherQuestionEl.classList.remove('hidden');
   questionHeaderText.textContent = 'Would you like to add another question?';
+  currentMessage.innerHTML = ''
+  currentMessage.textContent = 'QUESTION ADDED!'
   setTimeout(function () {
-    questionAdded.classList.add('hidden');
+    currentMessage.innerHTML = '';
   }, 3000);
 }
 
@@ -360,13 +211,15 @@ function renderQuizDropdown() {
 }
 
 function dropdownQuizClick() {
-  dropdownQuizList.classList.toggle("show");
-  if (dropdownQuizBtn.textContent === 'Stored Quizzes ▲') {
-    dropdownQuizBtn.textContent = 'Stored Quizzes ▼';
-  } else {
-    (dropdownQuizBtn.textContent = 'Stored Quizzes ▲');
-    renderQuizDropdown();
-  };
+  if (storedQuizzes.length > 0) {
+    dropdownQuizList.classList.toggle("show");
+    if (dropdownQuizBtn.textContent === 'Stored Quizzes ▲') {
+      dropdownQuizBtn.textContent = 'Stored Quizzes ▼';
+    } else {
+      (dropdownQuizBtn.textContent = 'Stored Quizzes ▲');
+      renderQuizDropdown();
+    };
+  }
 };
 
 function renderDeleteQuestions() {
@@ -382,7 +235,8 @@ function renderDeleteQuestions() {
 
 function storeQuiz() {
   let quizTitle = userQuizName.value.charAt(0).toUpperCase() + userQuizName.value.slice(1).toLowerCase();
-  let savedQuiz = { title: quizTitle, quiz: userQuiz, scores: [] };
+  let userQuizTime = parseInt(60 * quizTime.value);
+  let savedQuiz = { title: quizTitle, quiz: userQuiz, scores: [], time: userQuizTime };
   let quizTitles = [];
   for (let i = 0; i < storedQuizzes.length; i++) {
     quizTitles.push(storedQuizzes[i].title);
@@ -391,10 +245,20 @@ function storeQuiz() {
   if (quizTitles.includes(quizTitle)) {
     console.log('Already Stored')
     quizIndex = quizTitles.indexOf(quizTitle);
+    currentMessage.innerHTML = ''
+    currentMessage.textContent = 'QUIZ ALREADY STORED!'
+    setTimeout(function () {
+      currentMessage.innerHTML = '';
+    }, 3000);
   } else {
     quizIndex = storedQuizzes.length;
     storedQuizzes.push(savedQuiz);
     localStorage.setItem("stored-quizzes", JSON.stringify(storedQuizzes));
+    currentMessage.innerHTML = '';
+    currentMessage.textContent = `${quizTitle} STORED!`;
+    setTimeout(function () {
+      currentMessage.innerHTML = '';
+    }, 3000);
   }
 };
 
@@ -411,7 +275,7 @@ function startQuiz() {
 }
 
 function startTimer() {
-  timeInSeconds = 60;
+  timeInSeconds = parseInt(storedQuizzes[quizIndex].time);
   timer = setInterval(function () {
     let minutes = Math.floor(timeInSeconds / 60);
     let seconds = timeInSeconds % 60;
@@ -448,6 +312,8 @@ function playQuiz() {
 function endQuiz() {
   hideAllSections();
   endQuizSection.classList.remove('hidden');
+  clearInterval(timer);
+  timerText.textContent = '0:00';
   user = {
     name: userName,
     score: userScore
@@ -457,6 +323,19 @@ function endQuiz() {
   storedQuizzes[quizIndex].scores.push(user);
   questionHeaderText.textContent = `${userName}, your score is ${userScore}`;
   localStorage.setItem("stored-quizzes", JSON.stringify(storedQuizzes));
+}
+
+function renderScoresSection() {
+  console.log(storedQuizzes[quizIndex].scores);
+  if (storedQuizzes[quizIndex].scores.length > 0) {
+    for (let i = 0; i < storedQuizzes[quizIndex].scores.length; i++) {
+      let scoreEl = document.createElement('h5');
+      scoreEl.textContent = `${storedQuizzes[quizIndex].scores[i].name} - ${storedQuizzes[quizIndex].scores[i].score}`;
+      scoresContainer.appendChild(scoreEl);
+    }
+  } else {
+    questionHeaderText.textContent = 'No Scores Stored';
+  }
 }
 
 function hideAllSections() {
@@ -499,7 +378,11 @@ questionForm.addEventListener('submit', function (event) {
 newQuestionBtn.addEventListener('click', function (event) {
   console.log('new question button clicked');
   hideAllSections();
-  questionHeaderText.textContent = 'Write your question, answer choices, and mark the box for the correct answer';
+  currentMessage.innerHTML = ''
+  currentMessage.textContent = 'ADD A NEW QUESTION'
+  setTimeout(function () {
+    currentMessage.innerHTML = '';
+  }, 3000); questionHeaderText.textContent = 'Write your question, answer choices, and mark the box for the correct answer';
   questionFormSection.classList.remove('hidden');
 });
 
@@ -508,6 +391,11 @@ completeQuizBtn.addEventListener('click', function (event) {
   hideAllSections();
   questionHeaderText.textContent = 'You created a quiz!';
   quizMade.classList.remove('hidden');
+  currentMessage.innerHTML = ''
+  currentMessage.textContent = 'QUIZ MADE!'
+  setTimeout(function () {
+    currentMessage.innerHTML = '';
+  }, 3000);
   completeQuiz();
 });
 
@@ -525,7 +413,6 @@ dropdownQuestionList.addEventListener('click', function (event) {
   if (element.matches('h5')) {
     hideAllSections();
     let questionIndex = element.getAttribute('data-index');
-    console.log(userQuiz[questionIndex]);
     questionHeaderText.textContent = 'Question removed. Edit and add to the quiz.';
     questionFormSection.classList.remove('hidden');
     questionInput.value = userQuiz[questionIndex].question;
@@ -538,6 +425,11 @@ dropdownQuestionList.addEventListener('click', function (event) {
     choice3Radio.checked = userQuiz[questionIndex].choice3.correct;
     choice4Radio.checked = userQuiz[questionIndex].choice4.correct;
     userQuiz.splice(questionIndex, 1);
+    currentMessage.innerHTML = ''
+    currentMessage.textContent = `${element.textContent.toUpperCase()} SELECTED`
+    setTimeout(function () {
+      currentMessage.innerHTML = '';
+    }, 3000);
   };
 });
 
@@ -554,7 +446,7 @@ dropdownQuizList.addEventListener('click', function (event) {
     userQuiz = storedQuizzes[quizIndex].quiz;
     currentQuiz = userQuiz.slice();
     quizSelectedSection.classList.remove('hidden');
-    console.log(currentQuiz)  
+    console.log(currentQuiz)
   };
 });
 
@@ -573,10 +465,29 @@ deleteQuestionContainer.addEventListener('click', function (event) {
   if (element.matches('button')) {
     hideAllSections();
     let questionIndex = element.getAttribute('data-index');
-    console.log(userQuiz[questionIndex]);
-    questionHeaderText.textContent = 'Question deleted.';
-    quizMade.classList.remove('hidden');
-    userQuiz.splice(questionIndex, 1);
+    if (userQuiz.length > 1) {
+      console.log(userQuiz[questionIndex]);
+      questionHeaderText.textContent = 'Question deleted.';
+      quizMade.classList.remove('hidden');
+      userQuiz.splice(questionIndex, 1);
+      currentMessage.innerHTML = ''
+      currentMessage.textContent = `${element.textContent.toUpperCase()} DELETED!`;
+      setTimeout(function () {
+        currentMessage.innerHTML = '';
+      }, 3000);
+
+    } else {
+      userQuiz.splice(questionIndex, 1);
+      storedQuizzes.splice(quizIndex, 1);
+      localStorage.setItem("stored-quizzes", JSON.stringify(storedQuizzes));
+      questionHeaderText.textContent = 'What would you like to do?';
+      currentMessage.innerHTML = ''
+      currentMessage.textContent = 'QUIZ DELETED!'
+      setTimeout(function () {
+        currentMessage.innerHTML = '';
+      }, 3000);
+      return;
+    }
   };
   completeQuiz();
 });
@@ -636,12 +547,28 @@ renderedQuizContainer.addEventListener('click', function (event) {
       console.log(userScore)
       scoreText.textContent = userScore;
       console.log(currentQuiz)
+      currentMessage.innerHTML = ''
+      currentMessage.textContent = `CORRECT ANSWER!`;
+      setTimeout(function () {
+        currentMessage.innerHTML = '';
+      }, 3000);
+    } else {
+      currentMessage.innerHTML = ''
+      currentMessage.textContent = `INCORRECT ANSWER`;
+      setTimeout(function () {
+        currentMessage.innerHTML = '';
+      }, 3000);
     }
     currentQuiz.splice(choiceQuestionIndex, 1);
     console.log(currentQuiz.length);
     if (currentQuiz.length === 0) {
       hideAllSections();
       endQuizSection.classList.remove('hidden');
+      currentMessage.innerHTML = ''
+      currentMessage.textContent = `${userName}, YOU HAVE COMPLETED THE QUIZ!`;
+      setTimeout(function () {
+        currentMessage.innerHTML = '';
+      }, 3000);
       endQuiz();
     } else {
       playQuiz();
@@ -656,6 +583,11 @@ enterNameForm.addEventListener('submit', function (event) {
   renderedQuizSection.classList.remove('hidden');
   userName = userNameInput.value;
   totalQuestions = currentQuiz.length
+  currentMessage.innerHTML = ''
+  currentMessage.textContent = `GOOD LUCK ${userName}`;
+  setTimeout(function () {
+    currentMessage.innerHTML = '';
+  }, 3000);
   startTimer();
   playQuiz();
 });
@@ -667,7 +599,21 @@ tryAgainBtn.addEventListener('click', function (event) {
   renderedQuizSection.classList.remove('hidden');
   userCorrect = 0;
   n = 1;
+  currentMessage.innerHTML = ''
+  currentMessage.textContent = `QUIZ RESTARTED!`;
+  setTimeout(function () {
+    currentMessage.innerHTML = '';
+  }, 3000);
+  startTimer();
   playQuiz();
+});
+
+scoresBtn.addEventListener('click', function (event) {
+  console.log('scores clicked');
+  hideAllSections();
+  scoresSection.classList.remove('hidden');
+  questionHeaderText.textContent = 'Scores';
+  renderScoresSection();
 });
 
 getQuizzes();
