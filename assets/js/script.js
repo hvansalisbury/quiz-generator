@@ -88,6 +88,9 @@ const tryAgainBtn = document.getElementById('try-again-button');
 const scoresSection = document.getElementById('scores-section');
 const scoresContainer = document.getElementById('scores-container');
 
+const homeBtn = document.getElementById('home');
+const deleteAllBtn = document.getElementById('delete-all');
+
 function addQuestion() {
   questionInput.focus();
   const userQuestion = questionInput.value;
@@ -350,6 +353,7 @@ function hideAllSections() {
   startQuizSection.classList.add('hidden');
   renderedQuizSection.classList.add('hidden');
   endQuizSection.classList.add('hidden');
+  scoresSection.classList.add('hidden');
 }
 
 dropdownQuestionBtn.addEventListener('click', function (event) {
@@ -614,6 +618,30 @@ scoresBtn.addEventListener('click', function (event) {
   scoresSection.classList.remove('hidden');
   questionHeaderText.textContent = 'Scores';
   renderScoresSection();
+});
+
+homeBtn.addEventListener('click', function (event) {
+  console.log('home clicked');
+  if (timeInSeconds > 0) {
+    clearInterval(timer);
+    timeInSeconds = 0;
+  }
+  timerText.textContent = '0:00'
+  hideAllSections();
+  questionHeaderText.textContent = 'Welcome! What would you like to do?';
+});
+
+deleteAllBtn.addEventListener('click', function (event) {
+  console.log('delete all clicked');
+  let confirmDelete = confirm('This will delete all stored quizzes. Do you wish to continue?');
+  if (confirmDelete) {
+    hideAllSections();
+    clearInterval(timer);
+    timerText.textContent = '0:00'
+    questionHeaderText.textContent = 'All stored quizzes deleted.';
+    storedQuizzes = [];
+    localStorage.setItem("stored-quizzes", JSON.stringify(storedQuizzes));
+  }
 });
 
 getQuizzes();
