@@ -35,7 +35,13 @@ nav {
     cursor: pointer;
 }
 
-h1, h2, h3, h4, h5, h6, h7 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h7 {
     margin: 0px;
 }
 
@@ -261,7 +267,8 @@ button:active {
     cursor: pointer;
 }
 
-.dropbtn:hover, .dropbtn:focus {
+.dropbtn:hover,
+.dropbtn:focus {
     background-color: #2980B9;
 }
 
@@ -474,4 +481,78 @@ footer {
 
 .hidden {
     display: none !important;
+}
+
+@media screen and (max-width: 1160px) {
+    #question-form {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 976px) {
+    .text-inputs {
+        width: 45%;
+        font-size: 1em;
+        padding: 2px 2px;
+    }
+
+    h4 {
+        font-size: 1em;
+    }
+
+    label {
+        font-size: 1em;
+    }
+}
+
+@media screen and (max-width: 864px) {
+    main {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    aside {
+        flex-direction: row;
+        width: 95vw;
+        justify-content: center;
+        height: 100%;
+    }
+
+    #timer-box {
+        display: flex;
+        flex-direction: row;
+        width: 32vh;
+        height: 75px;
+    }
+
+    #score-box {
+        display: flex;
+        flex-direction: row;
+        width: 32vh;
+        height: 75px;
+    }
+
+    #button-box {
+        display: flex;
+        flex-direction: row;
+        width: 32vh;
+        height: 75px;
+    }
+
+    #main-section {
+        width: 95vw;
+        height: 75vh;
+    }
+
+    #content {
+        height: 70vh;
+    }
+}
+
+@media screen and (max-width: 615px) {
+    h3 {
+        padding: .25em;
+        font-size: 1.1em;
+    }
 }
