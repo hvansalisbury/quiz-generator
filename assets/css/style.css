@@ -550,9 +550,126 @@ footer {
     }
 }
 
+@media screen and (max-width: 740px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.35em;
+    }
+}
+
 @media screen and (max-width: 615px) {
     h3 {
         padding: .25em;
         font-size: 1.1em;
+    }
+}
+
+@media screen and (max-width: 551px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #header-left {
+        padding: .25em;
+    }
+
+    h1 {
+        font-size: 1.25em;
+    }
+
+    nav {
+        justify-content: center;
+    }
+
+    h2 {
+        font-size: 1em;
+    }
+
+    #main-section {
+        height: 100%;
+    }
+
+    #timer-box {
+        flex-direction: column;
+        height: 60px;
+    }
+
+    #score-box {
+        flex-direction: column;
+        height: 60px;
+    }
+
+    #button-box {
+        flex-direction: column;
+        height: 60px;
+    }
+
+    h3 {
+        font-size: .8em;
+    }
+
+    .form-line {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: .2em;
+    }
+
+    .text-inputs {
+        font-size: .7em;
+        width: 85%;
+    }
+
+    .radio-choices {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .radio {
+        font-size: .7em;
+    }
+
+    label {
+        font-size: .7em;
+    }
+
+    h4 {
+        font-size: .7em;
+    }
+
+    button {
+        padding: .5em;
+        margin: .5em;
+        font-size: .7em;
+    }
+
+    .box {
+        padding: .25em;
+    }
+
+    #question-form-section {
+        align-items: flex-start;
+    }
+
+    #content {
+        height: 55vh;
+        margin: .25em;
+    }
+
+    #current-data {
+        margin: .25em;
+        height: 25px;
+    }
+
+    h7 {
+        font-size: .6em;
+    }
+
+    #new-question-button {
+        font-size: .5em;
     }
 }
